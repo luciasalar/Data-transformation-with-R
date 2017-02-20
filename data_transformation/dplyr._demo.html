@@ -118,13 +118,12 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">dplyr._demo.R</h1>
 <h4 class="author"><em>apple</em></h4>
-<h4 class="date"><em>Mon Feb 20 10:44:22 2017</em></h4>
+<h4 class="date"><em>Mon Feb 20 14:19:54 2017</em></h4>
 
 </div>
 
 
-<pre class="r"><code>library(nycflights13)
-library(tidyverse)</code></pre>
+<pre class="r"><code>library(tidyverse)</code></pre>
 <pre><code>## Loading tidyverse: ggplot2
 ## Loading tidyverse: tibble
 ## Loading tidyverse: tidyr
@@ -135,343 +134,359 @@ library(tidyverse)</code></pre>
 <pre><code>## filter(): dplyr, stats
 ## lag():    dplyr, stats</code></pre>
 <pre class="r"><code>#observe data
-flights</code></pre>
-<pre><code>## # A tibble: 336,776 × 19
-##     year month   day dep_time sched_dep_time dep_delay arr_time
-##    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;
-## 1   2013     1     1      517            515         2      830
-## 2   2013     1     1      533            529         4      850
-## 3   2013     1     1      542            540         2      923
-## 4   2013     1     1      544            545        -1     1004
-## 5   2013     1     1      554            600        -6      812
-## 6   2013     1     1      554            558        -4      740
-## 7   2013     1     1      555            600        -5      913
-## 8   2013     1     1      557            600        -3      709
-## 9   2013     1     1      557            600        -3      838
-## 10  2013     1     1      558            600        -2      753
-## # ... with 336,766 more rows, and 12 more variables: sched_arr_time &lt;int&gt;,
-## #   arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;,
-## #   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;,
-## #   minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</code></pre>
-<pre class="r"><code># tibble only shows the first few rows and all the columns that fit on one screen.
+battles1 &lt;- read.csv(&quot;battles.csv&quot;, header = T)
 
-
-#filter
-jan1 &lt;- filter(flights, month == 1, day == 1)
+#convert your data into tibble
+# tibble only shows the first few rows and all the columns that fit on one screen.
+battles &lt;- as_data_frame(battles1)
+battles</code></pre>
+<pre><code>## # A tibble: 38 × 25
+##                             name  year battle_number
+##                           &lt;fctr&gt; &lt;int&gt;         &lt;int&gt;
+## 1     Battle of the Golden Tooth   298             1
+## 2    Battle at the Mummer's Ford   298             2
+## 3             Battle of Riverrun   298             3
+## 4       Battle of the Green Fork   298             4
+## 5  Battle of the Whispering Wood   298             5
+## 6            Battle of the Camps   298             6
+## 7                  Sack of Darry   298             7
+## 8          Battle of Moat Cailin   299             8
+## 9       Battle of Deepwood Motte   299             9
+## 10     Battle of the Stony Shore   299            10
+## # ... with 28 more rows, and 22 more variables: attacker_king &lt;fctr&gt;,
+## #   defender_king &lt;fctr&gt;, attacker_1 &lt;fctr&gt;, attacker_2 &lt;fctr&gt;,
+## #   attacker_3 &lt;fctr&gt;, attacker_4 &lt;fctr&gt;, defender_1 &lt;fctr&gt;,
+## #   defender_2 &lt;fctr&gt;, defender_3 &lt;lgl&gt;, defender_4 &lt;lgl&gt;,
+## #   attacker_outcome &lt;fctr&gt;, battle_type &lt;fctr&gt;, major_death &lt;int&gt;,
+## #   major_capture &lt;int&gt;, attacker_size &lt;int&gt;, defender_size &lt;int&gt;,
+## #   attacker_commander &lt;fctr&gt;, defender_commander &lt;fctr&gt;, summer &lt;int&gt;,
+## #   location &lt;fctr&gt;, region &lt;fctr&gt;, note &lt;fctr&gt;</code></pre>
+<pre class="r"><code>#filter
+attacker &lt;- filter(battles, attacker_king == &quot;Robb Stark&quot;)
 
 #R either prints out the results, or saves them to a variable. If you want to do both, you can wrap the assignment in parentheses:
 
-(dec25 &lt;- filter(flights, month == 12, day == 25))</code></pre>
-<pre><code>## # A tibble: 719 × 19
-##     year month   day dep_time sched_dep_time dep_delay arr_time
-##    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;
-## 1   2013    12    25      456            500        -4      649
-## 2   2013    12    25      524            515         9      805
-## 3   2013    12    25      542            540         2      832
-## 4   2013    12    25      546            550        -4     1022
-## 5   2013    12    25      556            600        -4      730
-## 6   2013    12    25      557            600        -3      743
-## 7   2013    12    25      557            600        -3      818
-## 8   2013    12    25      559            600        -1      855
-## 9   2013    12    25      559            600        -1      849
-## 10  2013    12    25      600            600         0      850
-## # ... with 709 more rows, and 12 more variables: sched_arr_time &lt;int&gt;,
-## #   arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;,
-## #   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;,
-## #   minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</code></pre>
+(attacker &lt;- filter(battles, attacker_king == &quot;Robb Stark&quot;))</code></pre>
+<pre><code>## # A tibble: 10 × 25
+##                             name  year battle_number attacker_king
+##                           &lt;fctr&gt; &lt;int&gt;         &lt;int&gt;        &lt;fctr&gt;
+## 1       Battle of the Green Fork   298             4    Robb Stark
+## 2  Battle of the Whispering Wood   298             5    Robb Stark
+## 3            Battle of the Camps   298             6    Robb Stark
+## 4     Battle of Torrhen's Square   299            11    Robb Stark
+## 5              Battle of Oxcross   299            15    Robb Stark
+## 6              Sack of Harrenhal   299            18    Robb Stark
+## 7             Battle of the Crag   299            19    Robb Stark
+## 8                 Siege of Darry   299            21    Robb Stark
+## 9           Battle of Duskendale   299            22    Robb Stark
+## 10              Siege of Seagard   299            27    Robb Stark
+## # ... with 21 more variables: defender_king &lt;fctr&gt;, attacker_1 &lt;fctr&gt;,
+## #   attacker_2 &lt;fctr&gt;, attacker_3 &lt;fctr&gt;, attacker_4 &lt;fctr&gt;,
+## #   defender_1 &lt;fctr&gt;, defender_2 &lt;fctr&gt;, defender_3 &lt;lgl&gt;,
+## #   defender_4 &lt;lgl&gt;, attacker_outcome &lt;fctr&gt;, battle_type &lt;fctr&gt;,
+## #   major_death &lt;int&gt;, major_capture &lt;int&gt;, attacker_size &lt;int&gt;,
+## #   defender_size &lt;int&gt;, attacker_commander &lt;fctr&gt;,
+## #   defender_commander &lt;fctr&gt;, summer &lt;int&gt;, location &lt;fctr&gt;,
+## #   region &lt;fctr&gt;, note &lt;fctr&gt;</code></pre>
 <pre class="r"><code>#logical operators 
-# or  |
+# or  |    &amp; and
 
-jan11Or12&lt;- filter(flights, month == 11 | month == 12)
-
-# A useful short-hand for this problem is x %in% y. This will select every row where x is one of the values 
+filter(battles, attacker_king == &quot;Robb Stark&quot; &amp; attacker_outcome == &quot;win&quot;)</code></pre>
+<pre><code>## # A tibble: 8 × 25
+##                            name  year battle_number attacker_king
+##                          &lt;fctr&gt; &lt;int&gt;         &lt;int&gt;        &lt;fctr&gt;
+## 1 Battle of the Whispering Wood   298             5    Robb Stark
+## 2           Battle of the Camps   298             6    Robb Stark
+## 3    Battle of Torrhen's Square   299            11    Robb Stark
+## 4             Battle of Oxcross   299            15    Robb Stark
+## 5             Sack of Harrenhal   299            18    Robb Stark
+## 6            Battle of the Crag   299            19    Robb Stark
+## 7                Siege of Darry   299            21    Robb Stark
+## 8              Siege of Seagard   299            27    Robb Stark
+## # ... with 21 more variables: defender_king &lt;fctr&gt;, attacker_1 &lt;fctr&gt;,
+## #   attacker_2 &lt;fctr&gt;, attacker_3 &lt;fctr&gt;, attacker_4 &lt;fctr&gt;,
+## #   defender_1 &lt;fctr&gt;, defender_2 &lt;fctr&gt;, defender_3 &lt;lgl&gt;,
+## #   defender_4 &lt;lgl&gt;, attacker_outcome &lt;fctr&gt;, battle_type &lt;fctr&gt;,
+## #   major_death &lt;int&gt;, major_capture &lt;int&gt;, attacker_size &lt;int&gt;,
+## #   defender_size &lt;int&gt;, attacker_commander &lt;fctr&gt;,
+## #   defender_commander &lt;fctr&gt;, summer &lt;int&gt;, location &lt;fctr&gt;,
+## #   region &lt;fctr&gt;, note &lt;fctr&gt;</code></pre>
+<pre class="r"><code>filter(battles, attacker_king == &quot;Robb Stark&quot; | defender_king == &quot;Joffrey/Tommen Baratheon&quot;)</code></pre>
+<pre><code>## # A tibble: 14 × 25
+##                                                    name  year
+##                                                  &lt;fctr&gt; &lt;int&gt;
+## 1                              Battle of the Green Fork   298
+## 2                         Battle of the Whispering Wood   298
+## 3                                   Battle of the Camps   298
+## 4                            Battle of Torrhen's Square   299
+## 5                                     Battle of Oxcross   299
+## 6                                     Sack of Harrenhal   299
+## 7                                    Battle of the Crag   299
+## 8                              Battle of the Blackwater   299
+## 9                                        Siege of Darry   299
+## 10                                 Battle of Duskendale   299
+## 11                                     Siege of Seagard   299
+## 12                         Battle of the Shield Islands   300
+## 13 Invasion of Ryamsport, Vinetown, and Starfish Harbor   300
+## 14                                  Siege of Winterfell   300
+## # ... with 23 more variables: battle_number &lt;int&gt;, attacker_king &lt;fctr&gt;,
+## #   defender_king &lt;fctr&gt;, attacker_1 &lt;fctr&gt;, attacker_2 &lt;fctr&gt;,
+## #   attacker_3 &lt;fctr&gt;, attacker_4 &lt;fctr&gt;, defender_1 &lt;fctr&gt;,
+## #   defender_2 &lt;fctr&gt;, defender_3 &lt;lgl&gt;, defender_4 &lt;lgl&gt;,
+## #   attacker_outcome &lt;fctr&gt;, battle_type &lt;fctr&gt;, major_death &lt;int&gt;,
+## #   major_capture &lt;int&gt;, attacker_size &lt;int&gt;, defender_size &lt;int&gt;,
+## #   attacker_commander &lt;fctr&gt;, defender_commander &lt;fctr&gt;, summer &lt;int&gt;,
+## #   location &lt;fctr&gt;, region &lt;fctr&gt;, note &lt;fctr&gt;</code></pre>
+<pre class="r"><code># A useful short-hand for this problem is x %in% y. This will select every row where x is one of the values 
 #in y. We could use it to rewrite the code above:
-nov_dec &lt;- filter(flights, month %in% c(11, 12))
+filter(battles, attacker_king %in% c(&quot;Robb Stark&quot;, &quot;Joffrey/Tommen Baratheon&quot;))</code></pre>
+<pre><code>## # A tibble: 24 × 25
+##                             name  year battle_number
+##                           &lt;fctr&gt; &lt;int&gt;         &lt;int&gt;
+## 1     Battle of the Golden Tooth   298             1
+## 2    Battle at the Mummer's Ford   298             2
+## 3             Battle of Riverrun   298             3
+## 4       Battle of the Green Fork   298             4
+## 5  Battle of the Whispering Wood   298             5
+## 6            Battle of the Camps   298             6
+## 7                  Sack of Darry   298             7
+## 8     Battle of Torrhen's Square   299            11
+## 9             Sack of Winterfell   299            14
+## 10             Battle of Oxcross   299            15
+## # ... with 14 more rows, and 22 more variables: attacker_king &lt;fctr&gt;,
+## #   defender_king &lt;fctr&gt;, attacker_1 &lt;fctr&gt;, attacker_2 &lt;fctr&gt;,
+## #   attacker_3 &lt;fctr&gt;, attacker_4 &lt;fctr&gt;, defender_1 &lt;fctr&gt;,
+## #   defender_2 &lt;fctr&gt;, defender_3 &lt;lgl&gt;, defender_4 &lt;lgl&gt;,
+## #   attacker_outcome &lt;fctr&gt;, battle_type &lt;fctr&gt;, major_death &lt;int&gt;,
+## #   major_capture &lt;int&gt;, attacker_size &lt;int&gt;, defender_size &lt;int&gt;,
+## #   attacker_commander &lt;fctr&gt;, defender_commander &lt;fctr&gt;, summer &lt;int&gt;,
+## #   location &lt;fctr&gt;, region &lt;fctr&gt;, note &lt;fctr&gt;</code></pre>
+<pre class="r"><code>#not x and not y
+major_battle&lt;- filter(battles, !(attacker_size &lt; 3000 | major_death &lt; 1))
 
-#not x and not y
-filter(flights, !(arr_delay &gt; 120 | dep_delay &gt; 120))</code></pre>
-<pre><code>## # A tibble: 316,050 × 19
-##     year month   day dep_time sched_dep_time dep_delay arr_time
-##    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;
-## 1   2013     1     1      517            515         2      830
-## 2   2013     1     1      533            529         4      850
-## 3   2013     1     1      542            540         2      923
-## 4   2013     1     1      544            545        -1     1004
-## 5   2013     1     1      554            600        -6      812
-## 6   2013     1     1      554            558        -4      740
-## 7   2013     1     1      555            600        -5      913
-## 8   2013     1     1      557            600        -3      709
-## 9   2013     1     1      557            600        -3      838
-## 10  2013     1     1      558            600        -2      753
-## # ... with 316,040 more rows, and 12 more variables: sched_arr_time &lt;int&gt;,
-## #   arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;,
-## #   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;,
-## #   minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</code></pre>
-<pre class="r"><code>#remove missing value
-df &lt;- tibble(x = c(1, NA, 3))
-filter(df, x &gt; 1)</code></pre>
-<pre><code>## # A tibble: 1 × 1
-##       x
-##   &lt;dbl&gt;
-## 1     3</code></pre>
-<pre class="r"><code>filter(df, !is.na(x) | x &gt; 1)</code></pre>
-<pre><code>## # A tibble: 2 × 1
-##       x
-##   &lt;dbl&gt;
-## 1     1
-## 2     3</code></pre>
-<pre class="r"><code>##############arrange 
+
+#remove missing value
+
+remove_na&lt;- filter(battles, !is.na(attacker_size))
+
+
+##############arrange 
 #If you provide more than one column name, each additional column will be used to break ties in the values of preceding columns:
-arrange(flights, year, month, dep_time)</code></pre>
-<pre><code>## # A tibble: 336,776 × 19
-##     year month   day dep_time sched_dep_time dep_delay arr_time
-##    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;
-## 1   2013     1    13        1           2249        72      108
-## 2   2013     1    31        1           2100       181      124
-## 3   2013     1     9        2           2359         3      432
-## 4   2013     1    13        2           2359         3      502
-## 5   2013     1    16        2           2125       157      119
-## 6   2013     1    10        3           2359         4      426
-## 7   2013     1    13        3           2030       213      340
-## 8   2013     1    16        3           1946       257      212
-## 9   2013     1    30        3           2159       124      100
-## 10  2013     1    31        4           2359         5      455
-## # ... with 336,766 more rows, and 12 more variables: sched_arr_time &lt;int&gt;,
-## #   arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;,
-## #   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;,
-## #   minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</code></pre>
-<pre class="r"><code>arrange(flights, desc(arr_delay))</code></pre>
-<pre><code>## # A tibble: 336,776 × 19
-##     year month   day dep_time sched_dep_time dep_delay arr_time
-##    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;
-## 1   2013     1     9      641            900      1301     1242
-## 2   2013     6    15     1432           1935      1137     1607
-## 3   2013     1    10     1121           1635      1126     1239
-## 4   2013     9    20     1139           1845      1014     1457
-## 5   2013     7    22      845           1600      1005     1044
-## 6   2013     4    10     1100           1900       960     1342
-## 7   2013     3    17     2321            810       911      135
-## 8   2013     7    22     2257            759       898      121
-## 9   2013    12     5      756           1700       896     1058
-## 10  2013     5     3     1133           2055       878     1250
-## # ... with 336,766 more rows, and 12 more variables: sched_arr_time &lt;int&gt;,
-## #   arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;,
-## #   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;,
-## #   minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</code></pre>
+arrange(battles, year, attacker_size)</code></pre>
+<pre><code>## # A tibble: 38 × 25
+##                             name  year battle_number
+##                           &lt;fctr&gt; &lt;int&gt;         &lt;int&gt;
+## 1  Battle of the Whispering Wood   298             5
+## 2            Battle of the Camps   298             6
+## 3     Battle of the Golden Tooth   298             1
+## 4             Battle of Riverrun   298             3
+## 5       Battle of the Green Fork   298             4
+## 6    Battle at the Mummer's Ford   298             2
+## 7                  Sack of Darry   298             7
+## 8           Battle of Winterfell   299            12
+## 9              Sack of Harrenhal   299            18
+## 10    Battle of Torrhen's Square   299            11
+## # ... with 28 more rows, and 22 more variables: attacker_king &lt;fctr&gt;,
+## #   defender_king &lt;fctr&gt;, attacker_1 &lt;fctr&gt;, attacker_2 &lt;fctr&gt;,
+## #   attacker_3 &lt;fctr&gt;, attacker_4 &lt;fctr&gt;, defender_1 &lt;fctr&gt;,
+## #   defender_2 &lt;fctr&gt;, defender_3 &lt;lgl&gt;, defender_4 &lt;lgl&gt;,
+## #   attacker_outcome &lt;fctr&gt;, battle_type &lt;fctr&gt;, major_death &lt;int&gt;,
+## #   major_capture &lt;int&gt;, attacker_size &lt;int&gt;, defender_size &lt;int&gt;,
+## #   attacker_commander &lt;fctr&gt;, defender_commander &lt;fctr&gt;, summer &lt;int&gt;,
+## #   location &lt;fctr&gt;, region &lt;fctr&gt;, note &lt;fctr&gt;</code></pre>
+<pre class="r"><code>arrange(battles, year, desc(attacker_size))</code></pre>
+<pre><code>## # A tibble: 38 × 25
+##                             name  year battle_number
+##                           &lt;fctr&gt; &lt;int&gt;         &lt;int&gt;
+## 1       Battle of the Green Fork   298             4
+## 2     Battle of the Golden Tooth   298             1
+## 3             Battle of Riverrun   298             3
+## 4            Battle of the Camps   298             6
+## 5  Battle of the Whispering Wood   298             5
+## 6    Battle at the Mummer's Ford   298             2
+## 7                  Sack of Darry   298             7
+## 8       Battle of the Blackwater   299            20
+## 9            Battle of the Fords   299            17
+## 10             Battle of Oxcross   299            15
+## # ... with 28 more rows, and 22 more variables: attacker_king &lt;fctr&gt;,
+## #   defender_king &lt;fctr&gt;, attacker_1 &lt;fctr&gt;, attacker_2 &lt;fctr&gt;,
+## #   attacker_3 &lt;fctr&gt;, attacker_4 &lt;fctr&gt;, defender_1 &lt;fctr&gt;,
+## #   defender_2 &lt;fctr&gt;, defender_3 &lt;lgl&gt;, defender_4 &lt;lgl&gt;,
+## #   attacker_outcome &lt;fctr&gt;, battle_type &lt;fctr&gt;, major_death &lt;int&gt;,
+## #   major_capture &lt;int&gt;, attacker_size &lt;int&gt;, defender_size &lt;int&gt;,
+## #   attacker_commander &lt;fctr&gt;, defender_commander &lt;fctr&gt;, summer &lt;int&gt;,
+## #   location &lt;fctr&gt;, region &lt;fctr&gt;, note &lt;fctr&gt;</code></pre>
 <pre class="r"><code>#Missing values are always sorted at the end:
 
-df &lt;- tibble(x = c(5, 2, NA))
-arrange(df, x)</code></pre>
-<pre><code>## # A tibble: 3 × 1
-##       x
-##   &lt;dbl&gt;
-## 1     2
-## 2     5
-## 3    NA</code></pre>
-<pre class="r"><code>arrange(df, desc(x))</code></pre>
-<pre><code>## # A tibble: 3 × 1
-##       x
-##   &lt;dbl&gt;
-## 1     5
-## 2     2
-## 3    NA</code></pre>
-<pre class="r"><code>############select
-select(flights, year, month, day)</code></pre>
-<pre><code>## # A tibble: 336,776 × 3
-##     year month   day
-##    &lt;int&gt; &lt;int&gt; &lt;int&gt;
-## 1   2013     1     1
-## 2   2013     1     1
-## 3   2013     1     1
-## 4   2013     1     1
-## 5   2013     1     1
-## 6   2013     1     1
-## 7   2013     1     1
-## 8   2013     1     1
-## 9   2013     1     1
-## 10  2013     1     1
-## # ... with 336,766 more rows</code></pre>
+
+############select
+select(battles, year, battle_number)</code></pre>
+<pre><code>## # A tibble: 38 × 2
+##     year battle_number
+##    &lt;int&gt;         &lt;int&gt;
+## 1    298             1
+## 2    298             2
+## 3    298             3
+## 4    298             4
+## 5    298             5
+## 6    298             6
+## 7    298             7
+## 8    299             8
+## 9    299             9
+## 10   299            10
+## # ... with 28 more rows</code></pre>
 <pre class="r"><code># Select all columns between year and day (inclusive)
-select(flights, year:day)</code></pre>
-<pre><code>## # A tibble: 336,776 × 3
-##     year month   day
-##    &lt;int&gt; &lt;int&gt; &lt;int&gt;
-## 1   2013     1     1
-## 2   2013     1     1
-## 3   2013     1     1
-## 4   2013     1     1
-## 5   2013     1     1
-## 6   2013     1     1
-## 7   2013     1     1
-## 8   2013     1     1
-## 9   2013     1     1
-## 10  2013     1     1
-## # ... with 336,766 more rows</code></pre>
+select(battles, year:attacker_1)</code></pre>
+<pre><code>## # A tibble: 38 × 5
+##     year battle_number            attacker_king            defender_king
+##    &lt;int&gt;         &lt;int&gt;                   &lt;fctr&gt;                   &lt;fctr&gt;
+## 1    298             1 Joffrey/Tommen Baratheon               Robb Stark
+## 2    298             2 Joffrey/Tommen Baratheon               Robb Stark
+## 3    298             3 Joffrey/Tommen Baratheon               Robb Stark
+## 4    298             4               Robb Stark Joffrey/Tommen Baratheon
+## 5    298             5               Robb Stark Joffrey/Tommen Baratheon
+## 6    298             6               Robb Stark Joffrey/Tommen Baratheon
+## 7    298             7 Joffrey/Tommen Baratheon               Robb Stark
+## 8    299             8      Balon/Euron Greyjoy               Robb Stark
+## 9    299             9      Balon/Euron Greyjoy               Robb Stark
+## 10   299            10      Balon/Euron Greyjoy               Robb Stark
+## # ... with 28 more rows, and 1 more variables: attacker_1 &lt;fctr&gt;</code></pre>
 <pre class="r"><code># Select all columns except those from year to day (inclusive)
-select(flights, -(year:day))</code></pre>
-<pre><code>## # A tibble: 336,776 × 16
-##    dep_time sched_dep_time dep_delay arr_time sched_arr_time arr_delay
-##       &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;
-## 1       517            515         2      830            819        11
-## 2       533            529         4      850            830        20
-## 3       542            540         2      923            850        33
-## 4       544            545        -1     1004           1022       -18
-## 5       554            600        -6      812            837       -25
-## 6       554            558        -4      740            728        12
-## 7       555            600        -5      913            854        19
-## 8       557            600        -3      709            723       -14
-## 9       557            600        -3      838            846        -8
-## 10      558            600        -2      753            745         8
-## # ... with 336,766 more rows, and 10 more variables: carrier &lt;chr&gt;,
-## #   flight &lt;int&gt;, tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;,
-## #   distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</code></pre>
-<pre class="r"><code>select(flights, contains(&quot;TIME&quot;))</code></pre>
-<pre><code>## # A tibble: 336,776 × 6
-##    dep_time sched_dep_time arr_time sched_arr_time air_time
-##       &lt;int&gt;          &lt;int&gt;    &lt;int&gt;          &lt;int&gt;    &lt;dbl&gt;
-## 1       517            515      830            819      227
-## 2       533            529      850            830      227
-## 3       542            540      923            850      160
-## 4       544            545     1004           1022      183
-## 5       554            600      812            837      116
-## 6       554            558      740            728      150
-## 7       555            600      913            854      158
-## 8       557            600      709            723       53
-## 9       557            600      838            846      140
-## 10      558            600      753            745      138
-## # ... with 336,766 more rows, and 1 more variables: time_hour &lt;dttm&gt;</code></pre>
+select(battles, -(year:attacker_1))</code></pre>
+<pre><code>## # A tibble: 38 × 20
+##                             name attacker_2 attacker_3 attacker_4
+##                           &lt;fctr&gt;     &lt;fctr&gt;     &lt;fctr&gt;     &lt;fctr&gt;
+## 1     Battle of the Golden Tooth                                 
+## 2    Battle at the Mummer's Ford                                 
+## 3             Battle of Riverrun                                 
+## 4       Battle of the Green Fork                                 
+## 5  Battle of the Whispering Wood      Tully                      
+## 6            Battle of the Camps      Tully                      
+## 7                  Sack of Darry                                 
+## 8          Battle of Moat Cailin                                 
+## 9       Battle of Deepwood Motte                                 
+## 10     Battle of the Stony Shore                                 
+## # ... with 28 more rows, and 16 more variables: defender_1 &lt;fctr&gt;,
+## #   defender_2 &lt;fctr&gt;, defender_3 &lt;lgl&gt;, defender_4 &lt;lgl&gt;,
+## #   attacker_outcome &lt;fctr&gt;, battle_type &lt;fctr&gt;, major_death &lt;int&gt;,
+## #   major_capture &lt;int&gt;, attacker_size &lt;int&gt;, defender_size &lt;int&gt;,
+## #   attacker_commander &lt;fctr&gt;, defender_commander &lt;fctr&gt;, summer &lt;int&gt;,
+## #   location &lt;fctr&gt;, region &lt;fctr&gt;, note &lt;fctr&gt;</code></pre>
+<pre class="r"><code>select(battles, contains(&quot;attacker&quot;))</code></pre>
+<pre><code>## # A tibble: 38 × 8
+##               attacker_king attacker_1 attacker_2 attacker_3 attacker_4
+##                      &lt;fctr&gt;     &lt;fctr&gt;     &lt;fctr&gt;     &lt;fctr&gt;     &lt;fctr&gt;
+## 1  Joffrey/Tommen Baratheon  Lannister                                 
+## 2  Joffrey/Tommen Baratheon  Lannister                                 
+## 3  Joffrey/Tommen Baratheon  Lannister                                 
+## 4                Robb Stark      Stark                                 
+## 5                Robb Stark      Stark      Tully                      
+## 6                Robb Stark      Stark      Tully                      
+## 7  Joffrey/Tommen Baratheon  Lannister                                 
+## 8       Balon/Euron Greyjoy    Greyjoy                                 
+## 9       Balon/Euron Greyjoy    Greyjoy                                 
+## 10      Balon/Euron Greyjoy    Greyjoy                                 
+## # ... with 28 more rows, and 3 more variables: attacker_outcome &lt;fctr&gt;,
+## #   attacker_size &lt;int&gt;, attacker_commander &lt;fctr&gt;</code></pre>
 <pre class="r"><code>##########rename
-rename(flights, tail_num = tailnum)</code></pre>
-<pre><code>## # A tibble: 336,776 × 19
-##     year month   day dep_time sched_dep_time dep_delay arr_time
-##    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;
-## 1   2013     1     1      517            515         2      830
-## 2   2013     1     1      533            529         4      850
-## 3   2013     1     1      542            540         2      923
-## 4   2013     1     1      544            545        -1     1004
-## 5   2013     1     1      554            600        -6      812
-## 6   2013     1     1      554            558        -4      740
-## 7   2013     1     1      555            600        -5      913
-## 8   2013     1     1      557            600        -3      709
-## 9   2013     1     1      557            600        -3      838
-## 10  2013     1     1      558            600        -2      753
-## # ... with 336,766 more rows, and 12 more variables: sched_arr_time &lt;int&gt;,
-## #   arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;, tail_num &lt;chr&gt;,
-## #   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;,
-## #   minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</code></pre>
+rename(battles, attackerKing = attacker_king)</code></pre>
+<pre><code>## # A tibble: 38 × 25
+##                             name  year battle_number
+##                           &lt;fctr&gt; &lt;int&gt;         &lt;int&gt;
+## 1     Battle of the Golden Tooth   298             1
+## 2    Battle at the Mummer's Ford   298             2
+## 3             Battle of Riverrun   298             3
+## 4       Battle of the Green Fork   298             4
+## 5  Battle of the Whispering Wood   298             5
+## 6            Battle of the Camps   298             6
+## 7                  Sack of Darry   298             7
+## 8          Battle of Moat Cailin   299             8
+## 9       Battle of Deepwood Motte   299             9
+## 10     Battle of the Stony Shore   299            10
+## # ... with 28 more rows, and 22 more variables: attackerKing &lt;fctr&gt;,
+## #   defender_king &lt;fctr&gt;, attacker_1 &lt;fctr&gt;, attacker_2 &lt;fctr&gt;,
+## #   attacker_3 &lt;fctr&gt;, attacker_4 &lt;fctr&gt;, defender_1 &lt;fctr&gt;,
+## #   defender_2 &lt;fctr&gt;, defender_3 &lt;lgl&gt;, defender_4 &lt;lgl&gt;,
+## #   attacker_outcome &lt;fctr&gt;, battle_type &lt;fctr&gt;, major_death &lt;int&gt;,
+## #   major_capture &lt;int&gt;, attacker_size &lt;int&gt;, defender_size &lt;int&gt;,
+## #   attacker_commander &lt;fctr&gt;, defender_commander &lt;fctr&gt;, summer &lt;int&gt;,
+## #   location &lt;fctr&gt;, region &lt;fctr&gt;, note &lt;fctr&gt;</code></pre>
 <pre class="r"><code>###########mutate
 
-select(flights, year:day, ends_with(&quot;delay&quot;), distance, air_time)</code></pre>
-<pre><code>## # A tibble: 336,776 × 7
-##     year month   day dep_delay arr_delay distance air_time
-##    &lt;int&gt; &lt;int&gt; &lt;int&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
-## 1   2013     1     1         2        11     1400      227
-## 2   2013     1     1         4        20     1416      227
-## 3   2013     1     1         2        33     1089      160
-## 4   2013     1     1        -1       -18     1576      183
-## 5   2013     1     1        -6       -25      762      116
-## 6   2013     1     1        -4        12      719      150
-## 7   2013     1     1        -5        19     1065      158
-## 8   2013     1     1        -3       -14      229       53
-## 9   2013     1     1        -3        -8      944      140
-## 10  2013     1     1        -2         8      733      138
-## # ... with 336,766 more rows</code></pre>
-<pre class="r"><code>mutate(flights, gain = arr_delay - dep_delay, speed = distance / air_time * 60)</code></pre>
-<pre><code>## # A tibble: 336,776 × 21
-##     year month   day dep_time sched_dep_time dep_delay arr_time
-##    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;
-## 1   2013     1     1      517            515         2      830
-## 2   2013     1     1      533            529         4      850
-## 3   2013     1     1      542            540         2      923
-## 4   2013     1     1      544            545        -1     1004
-## 5   2013     1     1      554            600        -6      812
-## 6   2013     1     1      554            558        -4      740
-## 7   2013     1     1      555            600        -5      913
-## 8   2013     1     1      557            600        -3      709
-## 9   2013     1     1      557            600        -3      838
-## 10  2013     1     1      558            600        -2      753
-## # ... with 336,766 more rows, and 14 more variables: sched_arr_time &lt;int&gt;,
-## #   arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;,
-## #   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;,
-## #   minute &lt;dbl&gt;, time_hour &lt;dttm&gt;, gain &lt;dbl&gt;, speed &lt;dbl&gt;</code></pre>
+select(battles, name:battle_number, starts_with(&quot;attacker&quot;), region)</code></pre>
+<pre><code>## # A tibble: 38 × 12
+##                             name  year battle_number
+##                           &lt;fctr&gt; &lt;int&gt;         &lt;int&gt;
+## 1     Battle of the Golden Tooth   298             1
+## 2    Battle at the Mummer's Ford   298             2
+## 3             Battle of Riverrun   298             3
+## 4       Battle of the Green Fork   298             4
+## 5  Battle of the Whispering Wood   298             5
+## 6            Battle of the Camps   298             6
+## 7                  Sack of Darry   298             7
+## 8          Battle of Moat Cailin   299             8
+## 9       Battle of Deepwood Motte   299             9
+## 10     Battle of the Stony Shore   299            10
+## # ... with 28 more rows, and 9 more variables: attacker_king &lt;fctr&gt;,
+## #   attacker_1 &lt;fctr&gt;, attacker_2 &lt;fctr&gt;, attacker_3 &lt;fctr&gt;,
+## #   attacker_4 &lt;fctr&gt;, attacker_outcome &lt;fctr&gt;, attacker_size &lt;int&gt;,
+## #   attacker_commander &lt;fctr&gt;, region &lt;fctr&gt;</code></pre>
+<pre class="r"><code>mutate(battles, gain = attacker_size - defender_size)</code></pre>
+<pre><code>## # A tibble: 38 × 26
+##                             name  year battle_number
+##                           &lt;fctr&gt; &lt;int&gt;         &lt;int&gt;
+## 1     Battle of the Golden Tooth   298             1
+## 2    Battle at the Mummer's Ford   298             2
+## 3             Battle of Riverrun   298             3
+## 4       Battle of the Green Fork   298             4
+## 5  Battle of the Whispering Wood   298             5
+## 6            Battle of the Camps   298             6
+## 7                  Sack of Darry   298             7
+## 8          Battle of Moat Cailin   299             8
+## 9       Battle of Deepwood Motte   299             9
+## 10     Battle of the Stony Shore   299            10
+## # ... with 28 more rows, and 23 more variables: attacker_king &lt;fctr&gt;,
+## #   defender_king &lt;fctr&gt;, attacker_1 &lt;fctr&gt;, attacker_2 &lt;fctr&gt;,
+## #   attacker_3 &lt;fctr&gt;, attacker_4 &lt;fctr&gt;, defender_1 &lt;fctr&gt;,
+## #   defender_2 &lt;fctr&gt;, defender_3 &lt;lgl&gt;, defender_4 &lt;lgl&gt;,
+## #   attacker_outcome &lt;fctr&gt;, battle_type &lt;fctr&gt;, major_death &lt;int&gt;,
+## #   major_capture &lt;int&gt;, attacker_size &lt;int&gt;, defender_size &lt;int&gt;,
+## #   attacker_commander &lt;fctr&gt;, defender_commander &lt;fctr&gt;, summer &lt;int&gt;,
+## #   location &lt;fctr&gt;, region &lt;fctr&gt;, note &lt;fctr&gt;, gain &lt;int&gt;</code></pre>
 <pre class="r"><code>#If you only want to keep the new variables, use transmute():
-transmute(flights,
-          gain = arr_delay - dep_delay,
-          hours = air_time / 60,
-          gain_per_hour = gain / hours
-)</code></pre>
-<pre><code>## # A tibble: 336,776 × 3
-##     gain     hours gain_per_hour
-##    &lt;dbl&gt;     &lt;dbl&gt;         &lt;dbl&gt;
-## 1      9 3.7833333      2.378855
-## 2     16 3.7833333      4.229075
-## 3     31 2.6666667     11.625000
-## 4    -17 3.0500000     -5.573770
-## 5    -19 1.9333333     -9.827586
-## 6     16 2.5000000      6.400000
-## 7     24 2.6333333      9.113924
-## 8    -11 0.8833333    -12.452830
-## 9     -5 2.3333333     -2.142857
-## 10    10 2.3000000      4.347826
-## # ... with 336,766 more rows</code></pre>
+transmute(battles, gain = attacker_size - defender_size)</code></pre>
+<pre><code>## # A tibble: 38 × 1
+##     gain
+##    &lt;int&gt;
+## 1  11000
+## 2     NA
+## 3   5000
+## 4  -2000
+## 5  -4125
+## 6  -6625
+## 7     NA
+## 8     NA
+## 9     NA
+## 10    NA
+## # ... with 28 more rows</code></pre>
 <pre class="r"><code>#summarise 
-summarise(flights, delay = mean(dep_delay, na.rm = TRUE))</code></pre>
+summarise(battles, attacker_size_aver = mean(attacker_size, na.rm = TRUE))</code></pre>
 <pre><code>## # A tibble: 1 × 1
-##      delay
-##      &lt;dbl&gt;
-## 1 12.63907</code></pre>
-<pre class="r"><code>by_day &lt;- group_by(flights, year, day)
+##   attacker_size_aver
+##                &lt;dbl&gt;
+## 1           9942.542</code></pre>
+<pre class="r"><code>by_king &lt;- group_by(battles, attacker_king)
 
-summarise(by_day, delay = mean(dep_delay, na.rm = TRUE))</code></pre>
-<pre><code>## Source: local data frame [31 x 3]
-## Groups: year [?]
-## 
-##     year   day     delay
-##    &lt;int&gt; &lt;int&gt;     &lt;dbl&gt;
-## 1   2013     1 14.172660
-## 2   2013     2 14.115552
-## 3   2013     3 10.811295
-## 4   2013     4  5.789651
-## 5   2013     5  7.820824
-## 6   2013     6  6.990244
-## 7   2013     7 14.339177
-## 8   2013     8 21.760773
-## 9   2013     9 14.644680
-## 10  2013    10 18.300505
-## # ... with 21 more rows</code></pre>
-<pre class="r"><code>### piping   %&gt;%
 
-filter(flights, year == 2013) %&gt;%
-  arrange(flights, year, month, dep_time)%&gt;%
-  select(-(year)) %&gt;%
-  rename(tail_num = tailnum)%&gt;%
-  mutate(gain = arr_delay - dep_delay, speed = distance / air_time * 60)</code></pre>
-<pre><code>## # A tibble: 19 × 20
-##    month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time
-##    &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;          &lt;int&gt;
-## 1      1     1      517            515         2      830            819
-## 2      1     1      533            529         4      850            830
-## 3      1     1      542            540         2      923            850
-## 4      1     1      544            545        -1     1004           1022
-## 5      1     1      554            558        -4      740            728
-## 6      1     1      554            600        -6      812            837
-## 7      1     1      555            600        -5      913            854
-## 8      1     1      557            600        -3      709            723
-## 9      1     1      557            600        -3      838            846
-## 10     1     1      558            600        -2      753            745
-## 11     1     1      558            600        -2      849            851
-## 12     1     1      558            600        -2      853            856
-## 13     1     1      558            600        -2      923            937
-## 14     1     1      558            600        -2      924            917
-## 15     1     1      559            559         0      702            706
-## 16     1     1      559            600        -1      854            902
-## 17     1     1      559            600        -1      941            910
-## 18     1     1      600            600         0      837            825
-## 19     1     1      600            600         0      851            858
-## # ... with 13 more variables: arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;,
-## #   flight &lt;int&gt;, tail_num &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;,
-## #   air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;,
-## #   time_hour &lt;dttm&gt;, gain &lt;dbl&gt;, speed &lt;dbl&gt;</code></pre>
+### piping   %&gt;%
+
+#Is Robb Stark a good millitary commander ?
+
+compare &lt;- battles %&gt;%
+  filter(!is.na(attacker_size &amp; defender_size))%&gt;%
+  select(attacker_king, attacker_size, defender_size) %&gt;%
+  mutate(gain = attacker_size - defender_size)%&gt;%
+  arrange(gain)</code></pre>
 
 
 
